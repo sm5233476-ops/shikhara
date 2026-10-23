@@ -1,0 +1,166 @@
+/* src/styles/global.css */
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/300-italic.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource-variable/manrope';
+
+:root {
+  --color-obsidian: #08090a;
+  --color-stone: #f0ece1;
+  --color-champagne: #d4af37;
+  --color-champagne-light: #f3e5ab;
+  --color-mist: #8e959e;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Manrope Variable', -apple-system, sans-serif;
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--color-obsidian);
+  color: var(--color-stone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Subtle Film Grain */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* Luxury Primary Button */
+.btn-luxury {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 38px;
+  background-color: var(--color-champagne);
+  color: #08090a;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-champagne);
+  transition: all 0.4s var(--ease-luxury);
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-luxury:hover {
+  background-color: transparent;
+  color: var(--color-stone);
+  border-color: var(--color-stone);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 26px;
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--color-stone);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: 1px solid rgba(240, 236, 225, 0.2);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s var(--ease-luxury);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-champagne);
+  color: var(--color-champagne);
+  background-color: rgba(212, 175, 55, 0.08);
+}
+
+/* 
+  MOBILE & TABLET RESPONSIVE ENGINE:
+  फोन और टैबलेट पर सारे 12-कॉलम ग्रिड्स अपने-आप खूबसूरत 1-कॉलम में स्टैक हो जाएँगे!
+*/
+@media (max-width: 1024px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  section {
+    padding: 100px 5vw !important;
+  }
+
+  /* Collapse all 12-column grids into clean single columns on mobile */
+  div[style*="grid-template-columns: repeat(12"] {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  div[style*="grid-column: span"] {
+    grid-column: span 1 !important;
+  }
+
+  div[style*="grid-template-columns: repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  div[style*="grid-template-columns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Make sure images stay proportional on mobile */
+  div[style*="height: 560px"],
+  div[style*="height: 580px"],
+  div[style*="height: 480px"],
+  div[style*="height: 520px"] {
+    height: 380px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  section {
+    padding: 80px 5vw !important;
+  }
+
+  .btn-luxury {
+    width: 100% !important;
+    padding: 16px 24px !important;
+  }
+}
