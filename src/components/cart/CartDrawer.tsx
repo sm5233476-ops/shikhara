@@ -304,9 +304,12 @@ export const CartDrawer: React.FC = () => {
               </div>
             </div>
 
-            {/* Checkout Action */}
+            {/* Checkout Action -> Opens the Luxury Checkout Modal */}
             <button
-              onClick={() => alert(`Order initiated for $${total}! Mock Stripe/Apple Pay checkout ready.`)}
+              onClick={() => {
+                const openCheckout = useCartStore.getState().openCheckout;
+                openCheckout();
+              }}
               className="btn-volt"
               style={{ width: '100%', padding: '18px', fontSize: '13px' }}
             >
