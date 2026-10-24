@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { PRODUCTS, type Product } from './data/products';
 import { useCartStore } from './store/useCartStore';
+import { CartDrawer } from './components/cart/CartDrawer';
 
 export const App: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product>(PRODUCTS[0]);
@@ -9,6 +10,7 @@ export const App: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState('US 9');
 
   const addItem = useCartStore((s) => s.addItem);
+  const openCart = useCartStore((s) => s.openCart);
   const itemCount = useCartStore((s) => s.getItemCount());
   const subtotal = useCartStore((s) => s.getSubtotal());
 
@@ -27,6 +29,9 @@ export const App: React.FC = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-dark)', padding: '0 5vw' }}>
+      {/* Slide-Out Shopping Cart Drawer */}
+      <CartDrawer />
+
       {/* Top Banner Ticker */}
       <div
         style={{
@@ -65,12 +70,16 @@ export const App: React.FC = () => {
           </span>
         </div>
 
-        {/* Live Cart Counter Button */}
+        {/* Clickable Live Cart Button -> Opens Drawer */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <div className="btn-ghost-dark" style={{ border: '1px solid var(--border-volt)' }}>
+          <button
+            onClick={openCart}
+            className="btn-ghost-dark"
+            style={{ border: '1px solid var(--border-volt)', cursor: 'pointer' }}
+          >
             <span>BAG [{itemCount}]</span>
             <span style={{ color: 'var(--color-volt)' }}>${subtotal}</span>
-          </div>
+          </button>
         </div>
       </header>
 
@@ -118,7 +127,6 @@ export const App: React.FC = () => {
               }}
             />
 
-            {/* Bottom specs bar */}
             <div
               style={{
                 position: 'absolute',
@@ -263,7 +271,7 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Drop Switcher (Switch Between Other Drops) */}
+        {/* Drop Switcher */}
         <div style={{ marginTop: '90px' }}>
           <span className="mono-label" style={{ color: 'var(--color-volt)', display: 'block', marginBottom: '16px' }}>
             ARCHIVE RELEASES // SELECT DROP TO INSPECT
