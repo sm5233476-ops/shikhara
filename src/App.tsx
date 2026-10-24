@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { PRODUCTS, type Product } from './data/products';
 import { useCartStore } from './store/useCartStore';
 import { CartDrawer } from './components/cart/CartDrawer';
+import { CollectionGrid } from './components/catalog/CollectionGrid';
+import { BrandManifesto } from './components/home/BrandManifesto';
 
 export const App: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product>(PRODUCTS[0]);
@@ -70,7 +72,7 @@ export const App: React.FC = () => {
           </span>
         </div>
 
-        {/* Clickable Live Cart Button -> Opens Drawer */}
+        {/* Live Cart Counter Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <button
             onClick={openCart}
@@ -83,8 +85,8 @@ export const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Product Interactive Stage */}
-      <main style={{ padding: '60px 0', maxWidth: '1400px', margin: '0 auto' }}>
+      {/* Hero Product Customizer Stage */}
+      <main style={{ padding: '60px 0 20px', maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '64px', alignItems: 'center' }}>
           {/* Left: 4K Sneaker Visual Stage */}
           <div
@@ -142,11 +144,11 @@ export const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Sneaker Specs & Customizer Panel */}
+          {/* Right: Customizer Panel */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
             <div>
               <span className="mono-label" style={{ color: 'var(--color-volt)' }}>
-                LIMITED DROP // {selectedProduct.category.toUpperCase()}
+                FEATURED DROP // {selectedProduct.category.toUpperCase()}
               </span>
               <h2 style={{ fontSize: '2.8rem', fontWeight: 900, letterSpacing: '-0.02em', marginTop: '8px' }}>
                 {selectedProduct.name}
@@ -170,7 +172,7 @@ export const App: React.FC = () => {
               {selectedProduct.description}
             </p>
 
-            {/* 1. Colorway Selector */}
+            {/* Colorway Selector */}
             <div>
               <span className="mono-label" style={{ display: 'block', marginBottom: '10px' }}>
                 SELECT COLORWAY //
@@ -213,7 +215,7 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* 2. Size Selector */}
+            {/* Size Selector */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span className="mono-label">SELECT SIZE (US MEN) //</span>
@@ -262,52 +264,32 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. Action Add To Bag */}
-            <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
-              <button onClick={handleAddToCart} className="btn-volt" style={{ flex: 1, padding: '20px' }}>
-                ADD TO BAG // ${selectedProduct.price}
-              </button>
-            </div>
+            {/* Action */}
+            <button onClick={handleAddToCart} className="btn-volt" style={{ width: '100%', padding: '20px' }}>
+              ADD TO BAG // ${selectedProduct.price}
+            </button>
           </div>
         </div>
 
-        {/* Drop Switcher */}
-        <div style={{ marginTop: '90px' }}>
-          <span className="mono-label" style={{ color: 'var(--color-volt)', display: 'block', marginBottom: '16px' }}>
-            ARCHIVE RELEASES // SELECT DROP TO INSPECT
-          </span>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-            {PRODUCTS.slice(0, 4).map((p) => {
-              const isCurrent = p.id === selectedProduct.id;
-              return (
-                <div
-                  key={p.id}
-                  onClick={() => {
-                    setSelectedProduct(p);
-                    setSelectedColor(p.colorways[0].name);
-                  }}
-                  style={{
-                    backgroundColor: 'var(--bg-surface)',
-                    border: isCurrent ? '1px solid var(--color-volt)' : '1px solid var(--border-subtle)',
-                    borderRadius: '16px',
-                    padding: '20px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <img src={p.colorways[0].image} alt={p.name} style={{ width: '100%', height: '140px', objectFit: 'contain' }} />
-                  <div style={{ marginTop: '14px' }}>
-                    <div className="mono-label" style={{ color: 'var(--color-volt)' }}>
-                      ${p.price}
-                    </div>
-                    <div style={{ fontWeight: 800, fontSize: '1rem', marginTop: '4px' }}>{p.name}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        {/* Brand Technical Manifesto Banner */}
+        <BrandManifesto />
+
+        {/* Full Collection Catalog Grid with Instant Filters */}
+        <CollectionGrid
+          onSelectProduct={(p) => {
+            setSelectedProduct(p);
+            setSelectedColor(p.colorways[0].name);
+          }}
+        />
       </main>
+
+      {/* Footer */}
+      <footer style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className="mono-label">© 2026 GRAIL LAB LTD. ALL RIGHTS RESERVED.</span>
+        <span className="mono-label" style={{ color: 'var(--color-volt)' }}>
+          SECURED ENCRYPTED CHECKOUT
+        </span>
+      </footer>
     </div>
   );
 };
