@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useCartStore } from '../../store/useCartStore';
 
 export const CheckoutModal: React.FC = () => {
-  const { isCheckoutOpen, closeCheckout, items, getTotal, getSubtotal, getShipping, getDiscount, clearCart } = useCartStore();
+  const { isCheckoutOpen, closeCheckout, getTotal, clearCart } = useCartStore();
 
   const [step, setStep] = useState<'details' | 'processing' | 'success'>('details');
   const [orderId, setOrderId] = useState('');
@@ -21,9 +21,6 @@ export const CheckoutModal: React.FC = () => {
   });
 
   const total = getTotal();
-  const subtotal = getSubtotal();
-  const shipping = getShipping();
-  const discount = getDiscount();
 
   const handlePay = (e: React.FormEvent) => {
     e.preventDefault();
@@ -327,10 +324,6 @@ export const CheckoutModal: React.FC = () => {
       <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
-        }
-        @keyframes slideInRight {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
         }
       `}</style>
     </div>
