@@ -7,6 +7,7 @@ export const CartDrawer: React.FC = () => {
     items,
     isCartOpen,
     closeCart,
+    openCheckout,
     removeItem,
     updateQuantity,
     applyPromo,
@@ -274,7 +275,7 @@ export const CartDrawer: React.FC = () => {
             {promoCode && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', backgroundColor: 'rgba(204, 255, 0, 0.08)', padding: '6px 12px', borderRadius: '4px' }}>
                 <span className="mono-label" style={{ color: 'var(--color-volt)', fontSize: '10px' }}>
-                  CODE [{promoCode}] APPLIED
+                  CODE [{promoCode}] APPLIED (-{Math.round(discount)} USD)
                 </span>
                 <button onClick={removePromo} style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: '10px' }}>
                   REMOVE
@@ -306,10 +307,7 @@ export const CartDrawer: React.FC = () => {
 
             {/* Checkout Action -> Opens the Luxury Checkout Modal */}
             <button
-              onClick={() => {
-                const openCheckout = useCartStore.getState().openCheckout;
-                openCheckout();
-              }}
+              onClick={openCheckout}
               className="btn-volt"
               style={{ width: '100%', padding: '18px', fontSize: '13px' }}
             >
