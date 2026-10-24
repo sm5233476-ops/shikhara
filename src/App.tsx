@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { PRODUCTS, type Product } from './data/products';
 import { useCartStore } from './store/useCartStore';
 import { CartDrawer } from './components/cart/CartDrawer';
+import { CheckoutModal } from './components/checkout/CheckoutModal';
 import { CollectionGrid } from './components/catalog/CollectionGrid';
 import { BrandManifesto } from './components/home/BrandManifesto';
 
@@ -33,6 +34,9 @@ export const App: React.FC = () => {
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-dark)', padding: '0 5vw' }}>
       {/* Slide-Out Shopping Cart Drawer */}
       <CartDrawer />
+
+      {/* Stripe-Style Luxury Checkout Modal & Confetti Engine */}
+      <CheckoutModal />
 
       {/* Top Banner Ticker */}
       <div
