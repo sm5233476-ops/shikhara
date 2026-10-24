@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 
 export interface CartItem {
-  id: string; // Composite key: `${productId}-${colorway}-${size}`
+  id: string;
   productId: string;
   name: string;
   price: number;
@@ -15,13 +15,15 @@ export interface CartItem {
 export interface CartState {
   items: CartItem[];
   isCartOpen: boolean;
+  isCheckoutOpen: boolean;
   promoCode: string | null;
-  discountRate: number; // e.g. 0.10 for 10%
+  discountRate: number;
 
-  // Actions
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
+  openCheckout: () => void;
+  closeCheckout: () => void;
   addItem: (item: Omit<CartItem, 'id' | 'quantity'>) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
@@ -29,13 +31,12 @@ export interface CartState {
   removePromo: () => void;
   clearCart: () => void;
 
-  // Computed Selectors
   getSubtotal: () => number;
   getShipping: () => number;
   getDiscount: () => number;
   getTotal: () => number;
   getItemCount: () => number;
-  getFreeShippingProgress: () => number; // 0 to 100%
+  getFreeShippingProgress: () => number;
 }
 
 const FREE_SHIPPING_THRESHOLD = 250;
@@ -44,12 +45,16 @@ const STANDARD_SHIPPING_FLAT = 20;
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   isCartOpen: false,
+  isCheckoutOpen: false,
   promoCode: null,
   discountRate: 0,
 
   openCart: () => set({ isCartOpen: true }),
   closeCart: () => set({ isCartOpen: false }),
   toggleCart: () => set((state) => ({ isCartOpen: !state.isCartOpen })),
+
+  openCheckout: () => set({ isCartOpen: false, isCheckoutOpen: true }),
+  closeCheckout: () => set({ isCheckoutOpen: false }),
 
   addItem: (newItem) => {
     set((state) => {
@@ -108,7 +113,6 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   clearCart: () => set({ items: [], promoCode: null, discountRate: 0 }),
 
-  // Computations
   getSubtotal: () => {
     return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   },
