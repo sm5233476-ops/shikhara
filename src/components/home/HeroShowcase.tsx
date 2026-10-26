@@ -1,5 +1,5 @@
 // src/components/home/HeroShowcase.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { type Product } from '../../data/products';
 import { useCartStore } from '../../store/useCartStore';
 
@@ -11,9 +11,11 @@ interface HeroShowcaseProps {
 export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCollection }) => {
   const [activeColorIdx, setActiveColorIdx] = useState(0);
   const [activeSize, setActiveSize] = useState('EU 42');
-  const [isRotating, setIsRotating] = useState(true);
 
-  // Reset color index when product changes from bottom grid
+  // Interactive 3D Perspective Tilt on Mouse Move (Morpho Water Style)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const centerStageRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setActiveColorIdx(0);
   }, [product]);
@@ -30,6 +32,22 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
       colorway: currentColor.name,
       size: activeSize,
     });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = centerStageRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Max 18 degree 3D rotation tilt
+    setTilt({
+      x: -(y / (rect.height / 2)) * 14,
+      y: (x / (rect.width / 2)) * 18,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
   };
 
   return (
@@ -51,15 +69,15 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '680px',
-          height: '680px',
-          background: 'radial-gradient(circle, rgba(197, 179, 154, 0.08) 0%, transparent 70%)',
+          width: '750px',
+          height: '750px',
+          background: 'radial-gradient(circle, rgba(197, 179, 154, 0.08) 0%, transparent 68%)',
           borderRadius: '50%',
           pointerEvents: 'none',
         }}
       />
 
-      <div style={{ maxWidth: '1380px', margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1.35fr 1fr', gap: '32px', alignItems: 'center' }}>
+      <div style={{ maxWidth: '1380px', margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1.4fr 1fr', gap: '32px', alignItems: 'center' }}>
         {/* Left Column: Quiet Luxury Narrative */}
         <div className="float-reveal" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -108,61 +126,83 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
           </div>
         </div>
 
-        {/* Center: The Morpho 360° Circular Centerpiece */}
+        {/* Center: The Seamless Floating 3D Sneaker (NO WHITE SQUARE BOX!) */}
         <div
+          ref={centerStageRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
           style={{
             position: 'relative',
-            height: '520px',
+            height: '560px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            perspective: '1200px',
+            cursor: 'grab',
           }}
-          onMouseEnter={() => setIsRotating(false)}
-          onMouseLeave={() => setIsRotating(true)}
         >
-          {/* Circular Orbit Track Rings */}
+          {/* Circular Orbit Ring Tracks */}
           <div
             style={{
               position: 'absolute',
-              width: '420px',
-              height: '420px',
-              border: '1px dashed rgba(244, 241, 234, 0.15)',
+              width: '440px',
+              height: '440px',
+              border: '1px dashed rgba(244, 241, 234, 0.16)',
               borderRadius: '50%',
-              animation: isRotating ? 'spinOrbit 28s linear infinite' : 'none',
+              animation: 'spinOrbit 36s linear infinite',
+              pointerEvents: 'none',
             }}
           />
           <div
             style={{
               position: 'absolute',
-              width: '480px',
-              height: '480px',
-              border: '1px solid rgba(197, 179, 154, 0.12)',
+              width: '520px',
+              height: '520px',
+              border: '1px solid rgba(197, 179, 154, 0.1)',
               borderRadius: '50%',
+              pointerEvents: 'none',
             }}
           />
 
-          {/* Floating Centerpiece Product Image */}
-          <img
-            key={`${product.id}-${currentColor.name}`}
-            src={currentColor.image}
-            alt={product.name}
+          {/* Seamless Floating Sneaker Container with 3D Tilt */}
+          <div
             style={{
-              maxHeight: '360px',
-              maxWidth: '90%',
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.9))',
-              transform: isRotating ? 'translateY(-10px) rotate(-4deg)' : 'translateY(0) rotate(0)',
-              transition: 'transform 0.6s var(--ease-luxury)',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+              transition: tilt.x === 0 ? 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)' : 'transform 0.1s ease-out',
+              willChange: 'transform',
               zIndex: 10,
-              cursor: 'grab',
             }}
-          />
+          >
+            {/* 
+              NO SQUARE BORDER OR WHITE BACKGROUND!
+              The image blends 100% seamlessly into the dark atmosphere!
+            */}
+            <img
+              key={`${product.id}-${currentColor.name}`}
+              src={currentColor.image}
+              alt={product.name}
+              style={{
+                maxHeight: '380px',
+                maxWidth: '92%',
+                objectFit: 'contain',
+                borderRadius: '24px',
+                filter: 'contrast(1.05) brightness(0.95) drop-shadow(0 40px 80px rgba(0,0,0,0.95))',
+                userSelect: 'none',
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
 
-          {/* Floating Badge Tag */}
+          {/* Floating Minimalist Tag */}
           <div
             style={{
               position: 'absolute',
-              bottom: '20px',
+              bottom: '16px',
               backgroundColor: 'rgba(17, 17, 17, 0.85)',
               backdropFilter: 'blur(16px)',
               border: '1px solid var(--border-subtle)',
@@ -171,16 +211,18 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
+              zIndex: 20,
+              pointerEvents: 'none',
             }}
           >
             <span style={{ width: '6px', height: '6px', backgroundColor: 'var(--color-accent)', borderRadius: '50%' }} />
             <span className="mono-tag" style={{ fontSize: '10px', color: 'var(--color-bone)' }}>
-              ROTATION: {currentColor.name.toUpperCase()} // ${product.price} USD
+              ROTATION // {currentColor.name.toUpperCase()} · ${product.price} USD
             </span>
           </div>
         </div>
 
-        {/* Right Column: Customizer & Quick Actions */}
+        {/* Right Column: Customizer & Action Controls */}
         <div className="float-reveal" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div>
             <span className="mono-tag" style={{ color: 'var(--color-accent)' }}>
