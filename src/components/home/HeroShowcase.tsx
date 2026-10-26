@@ -1,17 +1,22 @@
 // src/components/home/HeroShowcase.tsx
-import React, { useState } from 'react';
-import { PRODUCTS, type Product } from '../../data/products';
+import React, { useState, useEffect } from 'react';
+import { type Product } from '../../data/products';
 import { useCartStore } from '../../store/useCartStore';
 
 interface HeroShowcaseProps {
+  product: Product;
   onExploreCollection: () => void;
 }
 
-export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ onExploreCollection }) => {
-  const [product, setProduct] = useState<Product>(PRODUCTS[0]);
+export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCollection }) => {
   const [activeColorIdx, setActiveColorIdx] = useState(0);
   const [activeSize, setActiveSize] = useState('EU 42');
   const [isRotating, setIsRotating] = useState(true);
+
+  // Reset color index when product changes from bottom grid
+  useEffect(() => {
+    setActiveColorIdx(0);
+  }, [product]);
 
   const addItem = useCartStore((s) => s.addItem);
   const currentColor = product.colorways[activeColorIdx] || product.colorways[0];
@@ -81,10 +86,10 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ onExploreCollection 
           </h1>
 
           <p style={{ color: 'var(--color-bone-muted)', fontSize: '0.94rem', lineHeight: 1.7, maxWidth: '320px' }}>
-            Handcrafted in Civitanova Marche. Brushed Tuscan calf suede with zero audible sound signature.
+            {product.description}
           </p>
 
-          <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
             {product.specs.slice(0, 2).map((sp) => (
               <span
                 key={sp}
@@ -138,7 +143,7 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ onExploreCollection 
 
           {/* Floating Centerpiece Product Image */}
           <img
-            key={currentColor.name}
+            key={`${product.id}-${currentColor.name}`}
             src={currentColor.image}
             alt={product.name}
             style={{
@@ -170,7 +175,7 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ onExploreCollection 
           >
             <span style={{ width: '6px', height: '6px', backgroundColor: 'var(--color-accent)', borderRadius: '50%' }} />
             <span className="mono-tag" style={{ fontSize: '10px', color: 'var(--color-bone)' }}>
-              ROTATION: {currentColor.name.toUpperCase()} // $ {product.price} USD
+              ROTATION: {currentColor.name.toUpperCase()} // ${product.price} USD
             </span>
           </div>
         </div>
