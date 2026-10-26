@@ -3,8 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { PRODUCTS, type Product } from '../../data/products';
 import { useCartStore } from '../../store/useCartStore';
 
-type CategoryFilter = 'all' | 'limited' | 'footwear' | 'apparel';
-type SortOption = 'newest' | 'price-asc' | 'price-desc' | 'stock';
+type CategoryFilter = 'all' | 'footwear' | 'apparel';
 
 interface CollectionGridProps {
   onSelectProduct: (p: Product) => void;
@@ -12,43 +11,14 @@ interface CollectionGridProps {
 
 export const CollectionGrid: React.FC<CollectionGridProps> = ({ onSelectProduct }) => {
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
-  const [activeSort, setActiveSort] = useState<SortOption>('newest');
-  const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const addItem = useCartStore((s) => s.addItem);
 
-  // Instant Multi-Filter & Search Engine
   const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS];
-
-    // Category Filter
-    if (activeCategory !== 'all') {
-      result = result.filter((p) => p.category === activeCategory);
-    }
-
-    // Keyword Search
-    if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.tagline.toLowerCase().includes(q) ||
-          p.code.toLowerCase().includes(q)
-      );
-    }
-
-    // Sorting
-    if (activeSort === 'price-asc') {
-      result.sort((a, b) => a.price - b.price);
-    } else if (activeSort === 'price-desc') {
-      result.sort((a, b) => b.price - a.price);
-    } else if (activeSort === 'stock') {
-      result.sort((a, b) => a.stockLeft - b.stockLeft);
-    }
-
-    return result;
-  }, [activeCategory, activeSort, searchQuery]);
+    if (activeCategory === 'all') return PRODUCTS;
+    return PRODUCTS.filter((p) => p.category === activeCategory);
+  }, [activeCategory]);
 
   const handleQuickAdd = (e: React.MouseEvent, product: Product, size: string) => {
     e.stopPropagation();
@@ -63,94 +33,33 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onSelectProduct 
   };
 
   return (
-    <section id="collection" style={{ marginTop: '100px', marginBottom: '80px' }}>
-      {/* Search & Filter Header Bar */}
+    <section id="collection" style={{ padding: '80px 0 120px', maxWidth: '1380px', margin: '0 auto', width: '100%' }}>
+      {/* Almada Label Style Minimalist Filter Rail */}
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
           borderBottom: '1px solid var(--border-subtle)',
-          paddingBottom: '24px',
-          marginBottom: '40px',
+          paddingBottom: '20px',
+          marginBottom: '48px',
+          flexWrap: 'wrap',
+          gap: '20px',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-          {/* Live Search Input */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
-            <input
-              type="text"
-              placeholder="SEARCH DROPS // (e.g. VOLT, GORE-TEX, BOMBER)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                backgroundColor: 'var(--bg-surface)',
-                border: searchQuery ? '1px solid var(--color-volt)' : '1px solid var(--border-subtle)',
-                borderRadius: '8px',
-                color: '#fff',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                outline: 'none',
-                textTransform: 'uppercase',
-              }}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                style={{
-                  position: 'absolute',
-                  right: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-muted)',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                }}
-              >
-                ✕
-              </button>
-            )}
-          </div>
-
-          {/* Sort Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span className="mono-label" style={{ fontSize: '10px' }}>
-              SORT //
-            </span>
-            <select
-              value={activeSort}
-              onChange={(e) => setActiveSort(e.target.value as SortOption)}
-              style={{
-                backgroundColor: 'var(--bg-surface)',
-                color: 'var(--color-white)',
-                border: '1px solid var(--border-subtle)',
-                padding: '8px 14px',
-                borderRadius: '6px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                outline: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              <option value="newest">NEWEST DROPS</option>
-              <option value="price-asc">PRICE: LOW → HIGH</option>
-              <option value="price-desc">PRICE: HIGH → LOW</option>
-              <option value="stock">LOWEST STOCK FIRST</option>
-            </select>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '24px' }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.4rem', fontWeight: 300 }}>
+            Archive Editions
+          </h2>
+          <span className="mono-tag">[{filteredProducts.length} DESIGNS]</span>
         </div>
 
-        {/* Category Tabs */}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        {/* Category Pills */}
+        <div style={{ display: 'flex', gap: '8px' }}>
           {[
-            { id: 'all', label: `ALL ARCHIVES [${PRODUCTS.length}]` },
-            { id: 'limited', label: 'LIMITED EDITIONS' },
-            { id: 'footwear', label: 'FOOTWEAR' },
-            { id: 'apparel', label: 'APPAREL' },
+            { id: 'all', label: 'All Silhouettes' },
+            { id: 'footwear', label: 'Footwear' },
+            { id: 'apparel', label: 'Ready to Wear' },
           ].map((cat) => {
             const isSelected = activeCategory === cat.id;
             return (
@@ -158,17 +67,15 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onSelectProduct 
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id as CategoryFilter)}
                 style={{
-                  padding: '10px 18px',
-                  backgroundColor: isSelected ? 'var(--color-volt)' : 'var(--bg-surface)',
-                  color: isSelected ? '#000000' : 'var(--color-white)',
-                  border: isSelected ? '1px solid var(--color-volt)' : '1px solid var(--border-subtle)',
-                  borderRadius: '6px',
+                  padding: '8px 18px',
+                  backgroundColor: isSelected ? 'var(--color-bone)' : 'transparent',
+                  color: isSelected ? '#080808' : 'var(--color-bone)',
+                  border: isSelected ? '1px solid var(--color-bone)' : '1px solid var(--border-subtle)',
+                  borderRadius: '100px',
                   fontFamily: 'var(--font-mono)',
                   fontSize: '11px',
-                  fontWeight: 700,
                   cursor: 'pointer',
-                  letterSpacing: '0.1em',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.25s ease',
                 }}
               >
                 {cat.label}
@@ -178,171 +85,145 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onSelectProduct 
         </div>
       </div>
 
-      {/* Responsive Product Grid */}
-      {filteredProducts.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 0' }}>
-          <div className="mono-label" style={{ color: 'var(--color-crimson)', fontSize: '13px' }}>
-            NO ARCHIVES MATCHED YOUR SEARCH //
-          </div>
-          <button
-            onClick={() => {
-              setSearchQuery('');
-              setActiveCategory('all');
-            }}
-            className="btn-ghost-dark"
-            style={{ marginTop: '16px' }}
-          >
-            RESET ALL FILTERS
-          </button>
-        </div>
-      ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '24px',
-          }}
-        >
-          {filteredProducts.map((p) => {
-            const isHovered = hoveredCard === p.id;
-            return (
+      {/* Uniform 4:5 Luxury Portrait Grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '36px',
+        }}
+      >
+        {filteredProducts.map((p) => {
+          const isHovered = hoveredCard === p.id;
+          return (
+            <div
+              key={p.id}
+              onClick={() => {
+                onSelectProduct(p);
+                window.scrollTo({ top: 80, behavior: 'smooth' });
+              }}
+              onMouseEnter={() => setHoveredCard(p.id)}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                cursor: 'pointer',
+                transition: 'transform 0.4s var(--ease-luxury)',
+              }}
+            >
+              {/* Uniform 4:5 Portrait Card Visual Stage */}
               <div
-                key={p.id}
-                onClick={() => {
-                  onSelectProduct(p);
-                  window.scrollTo({ top: 120, behavior: 'smooth' });
-                }}
-                onMouseEnter={() => setHoveredCard(p.id)}
-                onMouseLeave={() => setHoveredCard(null)}
                 style={{
+                  width: '100%',
+                  aspectRatio: '4 / 5', // 100% Uniform across all products
                   backgroundColor: 'var(--bg-surface)',
-                  border: isHovered ? '1px solid var(--color-volt)' : '1px solid var(--border-subtle)',
                   borderRadius: '16px',
+                  border: isHovered ? '1px solid var(--color-accent)' : '1px solid var(--border-subtle)',
                   overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  padding: '24px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  transform: isHovered ? 'translateY(-6px)' : 'none',
-                  boxShadow: isHovered ? '0 20px 40px rgba(0,0,0,0.8)' : 'none',
                   position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '32px',
+                  transition: 'border-color 0.3s ease',
                 }}
               >
-                {/* Card Header Tags */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2 }}>
-                  <span className="mono-label" style={{ color: p.stockLeft < 10 ? 'var(--color-crimson)' : 'var(--color-volt)' }}>
-                    {p.stockLeft < 10 ? `ONLY ${p.stockLeft} LEFT` : `IN STOCK [${p.stockLeft}]`}
-                  </span>
-                  <span className="mono-label">{p.code}</span>
-                </div>
-
-                {/* Product Visual */}
-                <div
+                <img
+                  src={p.colorways[0].image}
+                  alt={p.name}
                   style={{
-                    height: '240px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    margin: '20px 0',
+                    maxHeight: '75%',
+                    maxWidth: '85%',
+                    objectFit: 'contain',
+                    transform: isHovered ? 'scale(1.08) translateY(-4px)' : 'scale(1)',
+                    transition: 'transform 0.6s var(--ease-luxury)',
+                    filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.8))',
                   }}
-                >
-                  <img
-                    src={p.colorways[0].image}
-                    alt={p.name}
+                />
+
+                {/* Micro Stock Tag */}
+                <div style={{ position: 'absolute', top: '16px', left: '16px' }}>
+                  <span className="mono-tag" style={{ fontSize: '9px', color: p.stockLeft < 10 ? '#E74C3C' : 'var(--color-bone-muted)' }}>
+                    {p.stockLeft < 10 ? `[ LOW: ${p.stockLeft} LEFT ]` : `[ ${p.code} ]`}
+                  </span>
+                </div>
+
+                {/* Quick Add Pill Drawer on Hover */}
+                {isHovered && (
+                  <div
                     style={{
-                      maxHeight: '210px',
-                      maxWidth: '100%',
-                      objectFit: 'contain',
-                      transform: isHovered ? 'scale(1.08) rotate(-3deg)' : 'scale(1)',
-                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      filter: 'drop-shadow(0 15px 25px rgba(0,0,0,0.7))',
+                      position: 'absolute',
+                      bottom: '16px',
+                      left: '16px',
+                      right: '16px',
+                      backgroundColor: 'rgba(8, 8, 8, 0.92)',
+                      backdropFilter: 'blur(12px)',
+                      borderRadius: '100px',
+                      padding: '8px 12px',
+                      border: '1px solid var(--border-subtle)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      animation: 'fadeIn 0.2s ease forwards',
                     }}
-                  />
-
-                  {/* Quick-Add Size Overlay on Hover */}
-                  {isHovered && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        backgroundColor: 'rgba(10, 10, 10, 0.94)',
-                        backdropFilter: 'blur(8px)',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-volt)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '8px',
-                      }}
-                    >
-                      <span className="mono-label" style={{ fontSize: '9px', textAlign: 'center', color: 'var(--color-volt)' }}>
-                        QUICK ADD SIZE //
-                      </span>
-                      <div style={{ display: 'flex', gap: '6px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        {p.sizes.slice(0, 5).map((sz) => (
-                          <button
-                            key={sz.size}
-                            disabled={!sz.inStock}
-                            onClick={(e) => handleQuickAdd(e, p, sz.size)}
-                            style={{
-                              padding: '4px 8px',
-                              backgroundColor: sz.inStock ? 'var(--bg-surface)' : 'transparent',
-                              color: sz.inStock ? '#ffffff' : 'rgba(255,255,255,0.2)',
-                              border: '1px solid var(--border-subtle)',
-                              borderRadius: '4px',
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '10px',
-                              cursor: sz.inStock ? 'pointer' : 'not-allowed',
-                              fontWeight: 700,
-                            }}
-                            onMouseEnter={(ev) => {
-                              if (sz.inStock) {
-                                ev.currentTarget.style.backgroundColor = 'var(--color-volt)';
-                                ev.currentTarget.style.color = '#000';
-                              }
-                            }}
-                            onMouseLeave={(ev) => {
-                              if (sz.inStock) {
-                                ev.currentTarget.style.backgroundColor = 'var(--bg-surface)';
-                                ev.currentTarget.style.color = '#fff';
-                              }
-                            }}
-                          >
-                            {sz.size}
-                          </button>
-                        ))}
-                      </div>
+                  >
+                    <span className="mono-tag" style={{ fontSize: '9px' }}>QUICK ADD:</span>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      {p.sizes.slice(0, 4).map((sz) => (
+                        <button
+                          key={sz.size}
+                          disabled={!sz.inStock}
+                          onClick={(e) => handleQuickAdd(e, p, sz.size)}
+                          style={{
+                            padding: '4px 8px',
+                            backgroundColor: 'transparent',
+                            color: sz.inStock ? 'var(--color-bone)' : 'rgba(244,241,234,0.2)',
+                            border: '1px solid var(--border-subtle)',
+                            borderRadius: '100px',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '9px',
+                            cursor: sz.inStock ? 'pointer' : 'not-allowed',
+                          }}
+                          onMouseEnter={(ev) => {
+                            if (sz.inStock) {
+                              ev.currentTarget.style.backgroundColor = 'var(--color-bone)';
+                              ev.currentTarget.style.color = '#080808';
+                            }
+                          }}
+                          onMouseLeave={(ev) => {
+                            if (sz.inStock) {
+                              ev.currentTarget.style.backgroundColor = 'transparent';
+                              ev.currentTarget.style.color = 'var(--color-bone)';
+                            }
+                          }}
+                        >
+                          {sz.size}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )}
+              </div>
+
+              {/* Editorial Caption Under Card (Almada Label Style) */}
+              <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 600, letterSpacing: '0.02em', color: 'var(--color-bone)' }}>
+                    {p.name}
+                  </h3>
+                  <span style={{ fontSize: '0.84rem', color: 'var(--color-bone-muted)', marginTop: '2px', display: 'block' }}>
+                    {p.tagline}
+                  </span>
                 </div>
 
-                {/* Card Footer Info */}
-                <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 800, letterSpacing: '0.02em' }}>{p.name}</h3>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: '1.1rem', color: 'var(--color-volt)' }}>
-                      ${p.price}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
-                    <span className="mono-label" style={{ fontSize: '10px' }}>
-                      {p.colorways.length} COLORWAYS
-                    </span>
-                    <span className="mono-label" style={{ fontSize: '10px', color: 'var(--color-muted)' }}>
-                      ★ {p.rating} ({p.reviewsCount})
-                    </span>
-                  </div>
-                </div>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1.05rem', fontWeight: 700, color: 'var(--color-bone)' }}>
+                  ${p.price}
+                </span>
               </div>
-            );
-          })}
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 };
