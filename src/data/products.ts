@@ -33,7 +33,7 @@ export const PRODUCTS: Product[] = [
     id: 'apex-01',
     name: 'MONOLITH // 01 RUNNER',
     code: 'VAL-FTW-001',
-    tagline: 'Brushed Italian Suede & Vibram Sphere Lug',
+    tagline: 'Brushed Italian Suede & Sculpted Vibram Sole',
     category: 'footwear',
     price: 460,
     originalPrice: 540,
@@ -51,19 +51,21 @@ export const PRODUCTS: Product[] = [
     colorways: [
       {
         name: 'Onyx Black',
-        hex: '#111111',
-        // High-end seamless dark studio sneaker (NO square white box!)
-        image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=1200&q=95',
+        hex: '#161616',
+        // Real verified all-black luxury high-top sneaker
+        image: 'https://images.unsplash.com/photo-1512374382149-233c42b6613c?auto=format&fit=crop&w=1200&q=95',
       },
       {
         name: 'Alabaster Bone',
         hex: '#E8E4DC',
-        image: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1200&q=95',
+        // Real verified white/bone minimalist sneaker
+        image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1200&q=95',
       },
       {
         name: 'Raw Sand',
-        hex: '#C5B39A',
-        image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1200&q=95',
+        hex: '#B8A898',
+        // Real verified neutral sand/grey athletic runner
+        image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=1200&q=95',
       },
     ],
     sizes: [
@@ -97,12 +99,7 @@ export const PRODUCTS: Product[] = [
       {
         name: 'Slate Grey',
         hex: '#2B2E34',
-        image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=95',
-      },
-      {
-        name: 'Chalk White',
-        hex: '#F3F0E8',
-        image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=1200&q=95',
+        image: 'https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?auto=format&fit=crop&w=1200&q=95',
       },
     ],
     sizes: [
@@ -135,7 +132,7 @@ export const PRODUCTS: Product[] = [
       {
         name: 'Titanium Sand',
         hex: '#B5AFA6',
-        image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=1200&q=95',
+        image: 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?auto=format&fit=crop&w=1200&q=95',
       },
     ],
     sizes: [
@@ -167,7 +164,7 @@ export const PRODUCTS: Product[] = [
       {
         name: 'Mineral Stone',
         hex: '#8C857B',
-        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=95',
+        image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=95',
       },
     ],
     sizes: [
