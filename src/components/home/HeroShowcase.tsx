@@ -12,7 +12,7 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
   const [activeColorIdx, setActiveColorIdx] = useState(0);
   const [activeSize, setActiveSize] = useState('EU 42');
 
-  // Interactive 3D Perspective Tilt on Mouse Move (Morpho Water Style)
+  // Interactive 3D Perspective Tilt on Mouse Movement
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const centerStageRef = useRef<HTMLDivElement>(null);
 
@@ -39,10 +39,9 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
     if (!rect) return;
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    // Max 18 degree 3D rotation tilt
     setTilt({
       x: -(y / (rect.height / 2)) * 14,
-      y: (x / (rect.width / 2)) * 18,
+      y: (x / (rect.width / 2)) * 16,
     });
   };
 
@@ -62,15 +61,15 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
         padding: '40px 0',
       }}
     >
-      {/* Morpho Water Style Background Radial Halo */}
+      {/* Morpho Water Style Background Soft Halo */}
       <div
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '750px',
-          height: '750px',
+          width: '780px',
+          height: '780px',
           background: 'radial-gradient(circle, rgba(197, 179, 154, 0.08) 0%, transparent 68%)',
           borderRadius: '50%',
           pointerEvents: 'none',
@@ -126,7 +125,7 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
           </div>
         </div>
 
-        {/* Center: The Seamless Floating 3D Sneaker (NO WHITE SQUARE BOX!) */}
+        {/* Center: The Studio Gallery Pedestal Showcase (NO SQUARE BOX!) */}
         <div
           ref={centerStageRef}
           onMouseMove={handleMouseMove}
@@ -147,7 +146,7 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
               position: 'absolute',
               width: '440px',
               height: '440px',
-              border: '1px dashed rgba(244, 241, 234, 0.16)',
+              border: '1px dashed rgba(244, 241, 234, 0.14)',
               borderRadius: '50%',
               animation: 'spinOrbit 36s linear infinite',
               pointerEvents: 'none',
@@ -164,35 +163,44 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
             }}
           />
 
-          {/* Seamless Floating Sneaker Container with 3D Tilt */}
+          {/* Luxury Gallery Pedestal Frame */}
           <div
             style={{
-              width: '100%',
-              height: '100%',
+              width: '380px',
+              height: '460px',
+              borderRadius: '32px',
+              backgroundColor: '#121212',
+              border: '1px solid var(--border-subtle)',
+              overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              position: 'relative',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.9)',
               transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
               transition: tilt.x === 0 ? 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)' : 'transform 0.1s ease-out',
               willChange: 'transform',
-              zIndex: 10,
             }}
           >
-            {/* 
-              NO SQUARE BORDER OR WHITE BACKGROUND!
-              The image blends 100% seamlessly into the dark atmosphere!
-            */}
             <img
               key={`${product.id}-${currentColor.name}`}
               src={currentColor.image}
               alt={product.name}
               style={{
-                maxHeight: '380px',
-                maxWidth: '92%',
-                objectFit: 'contain',
-                borderRadius: '24px',
-                filter: 'contrast(1.05) brightness(0.95) drop-shadow(0 40px 80px rgba(0,0,0,0.95))',
-                userSelect: 'none',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: 'contrast(1.06) brightness(0.92)',
+                transition: 'transform 0.4s ease',
+              }}
+            />
+
+            {/* Inner Pedestal Lighting Vignette */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'radial-gradient(circle at center, transparent 40%, rgba(8,8,8,0.7) 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -298,7 +306,7 @@ export const HeroShowcase: React.FC<HeroShowcaseProps> = ({ product, onExploreCo
           </button>
 
           <button onClick={onExploreCollection} className="btn-pill-ghost" style={{ width: '100%' }}>
-            Explore All 6 Studio Editions ↓
+            Explore All Studio Editions ↓
           </button>
         </div>
       </div>
