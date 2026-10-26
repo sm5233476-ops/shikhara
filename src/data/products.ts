@@ -33,7 +33,7 @@ export const PRODUCTS: Product[] = [
     id: 'apex-01',
     name: 'MONOLITH // 01 RUNNER',
     code: 'VAL-FTW-001',
-    tagline: 'Sculpted Italian Suede & Vibram Sole',
+    tagline: 'Brushed Italian Suede & Vibram Sphere Lug',
     category: 'footwear',
     price: 460,
     originalPrice: 540,
@@ -41,18 +41,19 @@ export const PRODUCTS: Product[] = [
     rating: 5.0,
     reviewsCount: 78,
     description:
-      'Hand-finished in Civitanova Marche, Italy. Constructed from brushed Tuscan calf suede, breathable architectural nylon, and a custom sculpted Vibram® Sphere lug sole for silent all-day propulsion.',
+      'Hand-finished in Civitanova Marche, Italy. Sculpted from brushed Tuscan calf suede, breathable technical ripstop, and a custom architectural Vibram® Sphere lug outsole for silent kinetic rebound.',
     specs: [
-      'Hand-Crafted Tuscan Calf Suede',
-      'Custom Sculpted Vibram® Sphere Outsole',
-      'Anodized Titanium Eyelet Hardware',
-      'Full-Grain Leather Lined Footbed',
+      'Hand-Brushed Tuscan Calf Suede',
+      'Sculpted Vibram® Sphere Outsole',
+      'Anodized Titanium Hardware',
+      'Full-Grain Glove Leather Lining',
     ],
     colorways: [
       {
         name: 'Onyx Black',
-        hex: '#141414',
-        image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1200&q=95',
+        hex: '#111111',
+        // High-end seamless dark studio sneaker (NO square white box!)
+        image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=1200&q=95',
       },
       {
         name: 'Alabaster Bone',
@@ -60,9 +61,9 @@ export const PRODUCTS: Product[] = [
         image: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1200&q=95',
       },
       {
-        name: 'Raw Hazel',
-        hex: '#96816D',
-        image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=1200&q=95',
+        name: 'Raw Sand',
+        hex: '#C5B39A',
+        image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1200&q=95',
       },
     ],
     sizes: [
@@ -76,7 +77,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'apex-02',
-    name: 'KINETIX LOW // GRAPHITE',
+    name: 'KINETIX LOW // SLATE',
     code: 'VAL-FTW-002',
     tagline: 'Architectural Minimalist Low-Top',
     category: 'footwear',
@@ -94,8 +95,8 @@ export const PRODUCTS: Product[] = [
     ],
     colorways: [
       {
-        name: 'Graphite Slate',
-        hex: '#22252A',
+        name: 'Slate Grey',
+        hex: '#2B2E34',
         image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=95',
       },
       {
@@ -132,7 +133,7 @@ export const PRODUCTS: Product[] = [
     ],
     colorways: [
       {
-        name: 'Sandstone Grey',
+        name: 'Titanium Sand',
         hex: '#B5AFA6',
         image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=1200&q=95',
       },
@@ -158,14 +159,14 @@ export const PRODUCTS: Product[] = [
       'Ergonomic post-movement footwear. Pressure-molded from closed-cell mineral EVA with integrated arch-contouring and sculpted ventilation vents for breathability.',
     specs: [
       'Molded Closed-Cell Mineral Foam',
-      'Deep Deep-Groove Kinetic Tread',
+      'Deep-Groove Kinetic Tread',
       'Anatomical Footbed Architecture',
       'Waterproof & Antimicrobial',
     ],
     colorways: [
       {
-        name: 'Cashew Tan',
-        hex: '#C2B199',
+        name: 'Mineral Stone',
+        hex: '#8C857B',
         image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=95',
       },
     ],
