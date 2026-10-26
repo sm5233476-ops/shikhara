@@ -4,30 +4,18 @@ import { PRODUCTS, type Product } from './data/products';
 import { useCartStore } from './store/useCartStore';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { CheckoutModal } from './components/checkout/CheckoutModal';
+import { HeroShowcase } from './components/home/HeroShowcase';
 import { CollectionGrid } from './components/catalog/CollectionGrid';
-import { BrandManifesto } from './components/home/BrandManifesto';
 
 export const App: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product>(PRODUCTS[0]);
-  const [selectedColor, setSelectedColor] = useState(PRODUCTS[0].colorways[0].name);
-  const [selectedSize, setSelectedSize] = useState('US 9');
-
-  const addItem = useCartStore((s) => s.addItem);
   const openCart = useCartStore((s) => s.openCart);
   const itemCount = useCartStore((s) => s.getItemCount());
   const subtotal = useCartStore((s) => s.getSubtotal());
 
-  const activeColorway = selectedProduct.colorways.find((c) => c.name === selectedColor) || selectedProduct.colorways[0];
-
-  const handleAddToCart = () => {
-    addItem({
-      productId: selectedProduct.id,
-      name: selectedProduct.name,
-      price: selectedProduct.price,
-      image: activeColorway.image,
-      colorway: activeColorway.name,
-      size: selectedSize,
-    });
+  const scrollToCollection = () => {
+    const el = document.getElementById('collection');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -41,20 +29,20 @@ export const App: React.FC = () => {
       {/* Top Banner Ticker */}
       <div
         style={{
-          height: '42px',
+          height: '40px',
           borderBottom: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-volt)', borderRadius: '50%' }} />
-          <span className="mono-label" style={{ color: 'var(--color-volt)' }}>
-            DROP 004 // LIVE WORLDWIDE
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '6px', height: '6px', backgroundColor: 'var(--color-accent)', borderRadius: '50%' }} />
+          <span className="mono-tag" style={{ color: 'var(--color-bone)' }}>
+            STUDIO EDITION 004 // WORLDWIDE DISPATCH
           </span>
         </div>
-        <span className="mono-label">COMPLIMENTARY GLOBAL COURIER OVER $250</span>
+        <span className="mono-tag">COMPLIMENTARY GLOBAL COURIER OVER $300</span>
       </div>
 
       {/* Main Header */}
@@ -68,230 +56,38 @@ export const App: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 900, letterSpacing: '0.12em', lineHeight: 1 }}>
-            GRAIL <span style={{ color: 'var(--color-volt)' }}>//</span> LAB
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.9rem', letterSpacing: '0.14em', fontWeight: 300, lineHeight: 1 }}>
+            VALENCE <span style={{ fontStyle: 'italic', color: 'var(--color-accent)' }}>STUDIO</span>
           </h1>
-          <span className="mono-label" style={{ fontSize: '9px', marginTop: '4px' }}>
-            EXPERIMENTAL FOOTWEAR ARCHIVE
+          <span className="mono-tag" style={{ fontSize: '9px', marginTop: '3px' }}>
+            CIVITANOVA MARCHE & TOKYO ARCHIVE
           </span>
         </div>
 
-        {/* Live Cart Counter Button */}
+        {/* Live Cart Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <button
             onClick={openCart}
-            className="btn-ghost-dark"
-            style={{ border: '1px solid var(--border-volt)', cursor: 'pointer' }}
+            className="btn-pill-ghost"
+            style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <span>BAG [{itemCount}]</span>
-            <span style={{ color: 'var(--color-volt)' }}>${subtotal}</span>
+            <span style={{ color: 'var(--color-accent)' }}>${subtotal}</span>
           </button>
         </div>
       </header>
 
-      {/* Hero Product Customizer Stage */}
-      <main style={{ padding: '60px 0 20px', maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '64px', alignItems: 'center' }}>
-          {/* Left: 4K Sneaker Visual Stage */}
-          <div
-            style={{
-              position: 'relative',
-              height: '620px',
-              backgroundColor: 'var(--bg-surface)',
-              borderRadius: '24px',
-              border: '1px solid var(--border-subtle)',
-              overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '40px',
-            }}
-          >
-            <span
-              className="mono-label"
-              style={{
-                position: 'absolute',
-                top: '24px',
-                left: '24px',
-                color: 'var(--color-volt)',
-                fontSize: '11px',
-              }}
-            >
-              [ {selectedProduct.code} ] // {selectedProduct.stockLeft} PAIRS REMAINING
-            </span>
+      {/* Hero: Morpho Water Style 360° Rotating Centerpiece */}
+      <HeroShowcase onExploreCollection={scrollToCollection} />
 
-            <img
-              key={`${selectedProduct.id}-${activeColorway.name}`}
-              src={activeColorway.image}
-              alt={selectedProduct.name}
-              style={{
-                width: '100%',
-                maxHeight: '440px',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.8))',
-                transition: 'transform 0.4s ease',
-              }}
-            />
-
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '24px',
-                left: '24px',
-                right: '24px',
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span className="mono-label">COLORWAY: {activeColorway.name.toUpperCase()}</span>
-              <span className="mono-label">VERIFIED AUTHENTIC</span>
-            </div>
-          </div>
-
-          {/* Right: Customizer Panel */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-            <div>
-              <span className="mono-label" style={{ color: 'var(--color-volt)' }}>
-                FEATURED DROP // {selectedProduct.category.toUpperCase()}
-              </span>
-              <h2 style={{ fontSize: '2.8rem', fontWeight: 900, letterSpacing: '-0.02em', marginTop: '8px' }}>
-                {selectedProduct.name}
-              </h2>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginTop: '12px' }}>
-                <span style={{ fontSize: '2rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>
-                  ${selectedProduct.price}
-                </span>
-                {selectedProduct.originalPrice && (
-                  <span style={{ fontSize: '1.2rem', color: 'var(--color-muted)', textDecoration: 'line-through' }}>
-                    ${selectedProduct.originalPrice}
-                  </span>
-                )}
-                <span className="mono-label" style={{ color: '#2ECC71' }}>
-                  IN STOCK · SHIPS TODAY
-                </span>
-              </div>
-            </div>
-
-            <p style={{ color: 'var(--color-muted)', fontSize: '1rem', lineHeight: 1.6 }}>
-              {selectedProduct.description}
-            </p>
-
-            {/* Colorway Selector */}
-            <div>
-              <span className="mono-label" style={{ display: 'block', marginBottom: '10px' }}>
-                SELECT COLORWAY //
-              </span>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                {selectedProduct.colorways.map((cw) => {
-                  const isChosen = activeColorway.name === cw.name;
-                  return (
-                    <button
-                      key={cw.name}
-                      onClick={() => setSelectedColor(cw.name)}
-                      style={{
-                        padding: '10px 18px',
-                        backgroundColor: isChosen ? 'var(--color-volt)' : 'var(--bg-surface)',
-                        color: isChosen ? '#000000' : 'var(--color-white)',
-                        border: isChosen ? '1px solid var(--color-volt)' : '1px solid var(--border-subtle)',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: '12px',
-                          height: '12px',
-                          borderRadius: '50%',
-                          backgroundColor: cw.hex,
-                          border: '1px solid rgba(255,255,255,0.2)',
-                        }}
-                      />
-                      {cw.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Size Selector */}
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span className="mono-label">SELECT SIZE (US MEN) //</span>
-                <span className="mono-label" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-                  SIZE GUIDE
-                </span>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
-                {selectedProduct.sizes.map((s) => {
-                  const isSelected = selectedSize === s.size;
-                  return (
-                    <button
-                      key={s.size}
-                      disabled={!s.inStock}
-                      onClick={() => setSelectedSize(s.size)}
-                      style={{
-                        padding: '12px 0',
-                        backgroundColor: isSelected ? '#ffffff' : 'var(--bg-surface)',
-                        color: isSelected ? '#000000' : s.inStock ? 'var(--color-white)' : 'rgba(255,255,255,0.2)',
-                        border: isSelected ? '1px solid #ffffff' : '1px solid var(--border-subtle)',
-                        borderRadius: '6px',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        cursor: s.inStock ? 'pointer' : 'not-allowed',
-                        position: 'relative',
-                      }}
-                    >
-                      {s.size}
-                      {s.lowStock && (
-                        <span
-                          style={{
-                            position: 'absolute',
-                            top: '-4px',
-                            right: '-4px',
-                            width: '6px',
-                            height: '6px',
-                            backgroundColor: 'var(--color-crimson)',
-                            borderRadius: '50%',
-                          }}
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Action */}
-            <button onClick={handleAddToCart} className="btn-volt" style={{ width: '100%', padding: '20px' }}>
-              ADD TO BAG // ${selectedProduct.price}
-            </button>
-          </div>
-        </div>
-
-        {/* Brand Technical Manifesto Banner */}
-        <BrandManifesto />
-
-        {/* Full Collection Catalog Grid with Instant Filters */}
-        <CollectionGrid
-          onSelectProduct={(p) => {
-            setSelectedProduct(p);
-            setSelectedColor(p.colorways[0].name);
-          }}
-        />
-      </main>
+      {/* Catalog: Almada Label Style 4:5 Uniform Portrait Grid */}
+      <CollectionGrid onSelectProduct={(p) => setSelectedProduct(p)} />
 
       {/* Footer */}
-      <footer style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span className="mono-label">© 2026 GRAIL LAB LTD. ALL RIGHTS RESERVED.</span>
-        <span className="mono-label" style={{ color: 'var(--color-volt)' }}>
-          SECURED ENCRYPTED CHECKOUT
+      <footer style={{ borderTop: '1px solid var(--border-subtle)', padding: '48px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+        <span className="mono-tag">© 2026 VALENCE STUDIO LTD. SEASONLESS ARCHIVE.</span>
+        <span className="mono-tag" style={{ color: 'var(--color-accent)' }}>
+          MILITARY ENCRYPTION & GLOBAL DISPATCH
         </span>
       </footer>
     </div>
