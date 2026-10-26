@@ -1,20 +1,25 @@
 /* src/styles/global.css */
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/300-italic.css';
+@import '@fontsource/cormorant-garamond/400.css';
 @import '@fontsource-variable/manrope';
 
 :root {
-  --bg-dark: #0a0a0a;
-  --bg-surface: #141414;
-  --bg-card: #191919;
-  --color-volt: #ccff00;
-  --color-volt-glow: rgba(204, 255, 0, 0.4);
-  --color-crimson: #ff2e00;
-  --color-white: #f5f5f7;
-  --color-muted: #8e8e93;
-  --border-subtle: rgba(255, 255, 255, 0.12);
-  --border-volt: rgba(204, 255, 0, 0.4);
+  /* Quiet Luxury Palette (Almada Label / Morpho Style) */
+  --bg-dark: #080808;
+  --bg-surface: #111111;
+  --bg-card: #151515;
+  --color-bone: #f4f1ea;
+  --color-bone-muted: rgba(244, 241, 234, 0.65);
+  --color-accent: #c5b39a; /* Warm Hazel Sand (No cheap neon!) */
+  --color-chrome: #d1d5db;
+  --border-subtle: rgba(244, 241, 234, 0.12);
+  --border-active: rgba(197, 179, 154, 0.6);
 
-  --font-main: 'Manrope Variable', -apple-system, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Manrope Variable', -apple-system, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 *,
@@ -30,8 +35,8 @@ body {
   width: 100%;
   min-height: 100%;
   background-color: var(--bg-dark);
-  color: var(--color-white);
-  font-family: var(--font-main);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -50,60 +55,78 @@ a {
   text-decoration: none;
 }
 
-/* Streetwear Buttons */
-.btn-volt {
+/* Floating Blur-In Animations at 60-120 FPS */
+@keyframes floatBlurIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.float-reveal {
+  animation: floatBlurIn 1.2s var(--ease-luxury) forwards;
+}
+
+/* Luxury Primary Action Button */
+.btn-luxury {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background-color: var(--color-volt);
-  color: #000000;
+  gap: 12px;
+  background-color: var(--color-bone);
+  color: #080808;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 16px 32px;
-  border: 1px solid var(--color-volt);
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-volt:hover {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 0 24px var(--color-volt-glow);
-}
-
-.btn-ghost-dark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: rgba(255, 255, 255, 0.04);
-  color: var(--color-white);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 12px 24px;
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-ghost-dark:hover {
-  border-color: var(--color-volt);
-  color: var(--color-volt);
-  background-color: rgba(204, 255, 0, 0.05);
-}
-
-/* Badge Tags */
-.mono-label {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  padding: 18px 36px;
+  border: 1px solid var(--color-bone);
+  border-radius: 100px; /* Modern Pill Shape */
+  cursor: pointer;
+  transition: all 0.4s var(--ease-luxury);
+}
+
+.btn-luxury:hover {
+  background-color: transparent;
+  color: var(--color-bone);
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  background-color: rgba(244, 241, 234, 0.04);
+  color: var(--color-bone);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-pill-ghost:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background-color: rgba(197, 179, 154, 0.08);
+}
+
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-bone-muted);
 }
