@@ -78,7 +78,7 @@ export const App: React.FC = () => {
       </header>
 
       {/* Hero: Morpho Water Style 360° Rotating Centerpiece */}
-      <HeroShowcase onExploreCollection={scrollToCollection} />
+      <HeroShowcase product={selectedProduct} onExploreCollection={scrollToCollection} />
 
       {/* Catalog: Almada Label Style 4:5 Uniform Portrait Grid */}
       <CollectionGrid onSelectProduct={(p) => setSelectedProduct(p)} />
